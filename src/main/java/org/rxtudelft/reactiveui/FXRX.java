@@ -1,5 +1,6 @@
 package org.rxtudelft.reactiveui;
 
+import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
 import javafx.event.EventType;
 import javafx.scene.Node;
@@ -15,9 +16,11 @@ public class FXRX {
         });
     }
 
-    public static <T extends javafx.beans.Observable> Observable<T> fromFXObsevable(javafx.beans.Observable observable) {
-        return Observable.create((Observable.OnSubscribe) s -> {
-            observable.addListener(s::onNext);
+    public static <T> Observable<T> fromObservableValue(ObservableValue<T> observableValue) {
+        return Observable.create((Observable.OnSubscribe<T>) s -> {
+            observableValue.addListener((obs, oldValue, newValue) -> {
+                s.onNext(newValue);
+            });
         });
     }
 }
