@@ -7,20 +7,17 @@ import javafx.scene.Node;
 import rx.Observable;
 
 /**
- * Created by ferdy on 5/1/14.
+ * Wrappers for easily transitioning from JavaFX to RxJava
  */
+@SuppressWarnings({"UnusedDeclaration", "SpellCheckingInspection"})
 public class FXRX {
     public static <T extends Event> Observable<T> fromNode(EventType<T> eventType, Node node) {
-        return Observable.create((Observable.OnSubscribe<T>) s -> {
-            node.addEventHandler(eventType, s::onNext);
-        });
+        return Observable.create((Observable.OnSubscribe<T>) s -> node.addEventHandler(eventType, s::onNext));
     }
     
     public static <T> Observable<T> fromObservableValue(ObservableValue<T> observableValue) {
         return Observable.create((Observable.OnSubscribe<T>) s -> {
-            observableValue.addListener((obs, oldValue, newValue) -> {
-                s.onNext(newValue);
-            });
+            observableValue.addListener((obs, oldValue, newValue) -> s.onNext(newValue));
         });
     }
 }
