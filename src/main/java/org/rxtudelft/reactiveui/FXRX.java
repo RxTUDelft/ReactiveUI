@@ -15,7 +15,7 @@ public class FXRX {
             node.addEventHandler(eventType, s::onNext);
         });
     }
-
+    
     public static <T> Observable<T> fromObservableValue(ObservableValue<T> observableValue) {
         return Observable.create((Observable.OnSubscribe<T>) s -> {
             observableValue.addListener((obs, oldValue, newValue) -> {
